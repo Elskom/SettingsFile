@@ -1,2 +1,2 @@
-# MessageManager
-A c# generic MessageBox manager.
+# SettingsFile
+A c# class that handles the settings for any application.

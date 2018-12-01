@@ -11,7 +11,7 @@ namespace Elskom.Generic.Libs
     using XmlAbstraction;
 
     /// <summary>
-    /// Class that handles the settings for this Application.
+    /// A class that handles the settings for any application.
     /// </summary>
     public static class SettingsFile
     {
@@ -30,12 +30,12 @@ namespace Elskom.Generic.Libs
         public static XmlObject Settingsxml { get; set; }
 
         /// <summary>
-        /// Gets the path to the Els_kom Settings file.
+        /// Gets the path to the Application Settings file.
         ///
         /// Creates the folder if needed.
         /// </summary>
         /// <value>
-        /// The path to the Els_kom Settings file.
+        /// The path to the Application Settings file.
         ///
         /// Creates the folder if needed.
         /// </value>

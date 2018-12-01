@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net452;net462;net47;net472</TargetFrameworks>
+		<TargetFrameworks>netcoreapp2.1;netstandard2.0;net452;net462;net47;net472</TargetFrameworks>
 		<AssemblyName>SettingsFile</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<Company>Els_kom org.</Company>
@@ -49,6 +49,9 @@
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta009">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="XmlAbstraction">
+		    <Version>1.2.0</Version>
 		</PackageReference>
 	</ItemGroup>
 
