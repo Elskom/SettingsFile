@@ -12,9 +12,9 @@
 		<PackageProjectUrl>https://github.com/Elskom/SettingsFile/</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/Elskom/SettingsFile/blob/master/LICENSE</PackageLicenseUrl>
 		<Copyright>Copyright (c) 2018</Copyright>
-		<Description>A c# generic MessageBox manager.</Description>
-		<PackageReleaseNotes>Initial release.</PackageReleaseNotes>
-		<Version>1.0.0</Version>
+		<Description>A c# class that handles the settings for any application.</Description>
+		<PackageReleaseNotes>Fixed package description.</PackageReleaseNotes>
+		<Version>1.0.1</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
