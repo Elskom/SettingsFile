@@ -49,19 +49,20 @@ namespace Elskom.Generic.Libs
                 // everything added to the path obtained from System.Environment.GetFolderPath.
                 var localPath = Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData);
-                var thisProcess = Process.GetCurrentProcess();
-                localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
-                thisProcess.Dispose();
-                if (!Directory.Exists(localPath))
+                using (var thisProcess = Process.GetCurrentProcess())
                 {
-                    Directory.CreateDirectory(localPath);
-                }
+                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
+                    if (!Directory.Exists(localPath))
+                    {
+                        Directory.CreateDirectory(localPath);
+                    }
 
-                // do not create settings file, just pass this path to XmlObject.
-                // if we create it ourselves the new optimized class will fail
-                // to work right if it is empty.
-                localPath += System.IO.Path.DirectorySeparatorChar + "Settings.xml";
-                return localPath;
+                    // do not create settings file, just pass this path to XmlObject.
+                    // if we create it ourselves the new optimized class will fail
+                    // to work right if it is empty.
+                    localPath += System.IO.Path.DirectorySeparatorChar + "Settings.xml";
+                    return localPath;
+                }
             }
         }
 
@@ -76,11 +77,12 @@ namespace Elskom.Generic.Libs
             {
                 var localPath = Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData);
-                var thisProcess = Process.GetCurrentProcess();
-                localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
-                localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName + "-" + thisProcess.Id.ToString() + ".log";
-                thisProcess.Dispose();
-                return localPath;
+                using (var thisProcess = Process.GetCurrentProcess())
+                {
+                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
+                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName + "-" + thisProcess.Id.ToString() + ".log";
+                    return localPath;
+                }
             }
         }
 
@@ -93,11 +95,12 @@ namespace Elskom.Generic.Libs
             {
                 var localPath = Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData);
-                var thisProcess = Process.GetCurrentProcess();
-                localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
-                localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName + "-" + thisProcess.Id.ToString() + ".mdmp";
-                thisProcess.Dispose();
-                return localPath;
+                using (var thisProcess = Process.GetCurrentProcess())
+                {
+                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
+                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName + "-" + thisProcess.Id.ToString() + ".mdmp";
+                    return localPath;
+                }
             }
         }
     }
