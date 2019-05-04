@@ -5,7 +5,9 @@
 
 namespace Elskom.Generic.Libs
 {
+#if !WITH_CUSTOM_ENVIRONMENT
     using System;
+#endif
     using System.Diagnostics;
     using System.IO;
     using XmlAbstraction;
@@ -40,31 +42,7 @@ namespace Elskom.Generic.Libs
         /// Creates the folder if needed.
         /// </value>
         public static string Path
-        {
-            get
-            {
-                // We cannot use System.Windows.Forms.Application.LocalUserAppDataPath as it would
-                // Create annoying folders, and throw annoying Exceptions making it harder to
-                // debug as it spams the debugger. Also then we would not need to Replace
-                // everything added to the path obtained from System.Environment.GetFolderPath.
-                var localPath = Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData);
-                using (var thisProcess = Process.GetCurrentProcess())
-                {
-                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
-                    if (!Directory.Exists(localPath))
-                    {
-                        Directory.CreateDirectory(localPath);
-                    }
-
-                    // do not create settings file, just pass this path to XmlObject.
-                    // if we create it ourselves the new optimized class will fail
-                    // to work right if it is empty.
-                    localPath += System.IO.Path.DirectorySeparatorChar + "Settings.xml";
-                    return localPath;
-                }
-            }
-        }
+            => PrivatePathResolver(".xml");
 
         /// <summary>
         /// Gets the path to the Application Error Log file.
@@ -72,36 +50,48 @@ namespace Elskom.Generic.Libs
         /// Creates the Error Log file if needed.
         /// </summary>
         public static string ErrorLogPath
-        {
-            get
-            {
-                var localPath = Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData);
-                using (var thisProcess = Process.GetCurrentProcess())
-                {
-                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
-                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName + "-" + thisProcess.Id.ToString() + ".log";
-                    return localPath;
-                }
-            }
-        }
+            => PrivatePathResolver(".log");
 
         /// <summary>
         /// Gets the path to the Application Mini-Dump file.
         /// </summary>
         public static string MiniDumpPath
+            => PrivatePathResolver(".mdmp");
+
+        private static string PrivatePathResolver(string fileExtension)
         {
-            get
+            // We cannot use System.Windows.Forms.Application.LocalUserAppDataPath as it would
+            // Create annoying folders, and throw annoying Exceptions making it harder to
+            // debug as it spams the debugger. Also then we would not need to Replace
+            // everything added to the path obtained from System.Environment.GetFolderPath.
+            var localPath = Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData);
+            using (var thisProcess = Process.GetCurrentProcess())
             {
-                var localPath = Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData);
-                using (var thisProcess = Process.GetCurrentProcess())
+                localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}";
+                if (fileExtension.Equals(".xml"))
                 {
-                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName;
-                    localPath += System.IO.Path.DirectorySeparatorChar + thisProcess.ProcessName + "-" + thisProcess.Id.ToString() + ".mdmp";
-                    return localPath;
+                    if (!Directory.Exists(localPath))
+                    {
+                        _ = Directory.CreateDirectory(localPath);
+                    }
+
+                    // do not create the settings file, just pass this path to XmlObject.
+                    // if we create it ourselves the new optimized class will fail
+                    // to work right if it is empty.
+                    localPath += $"{System.IO.Path.DirectorySeparatorChar}Settings.xml";
+                }
+                else if (fileExtension.Equals(".log"))
+                {
+                    localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}-{thisProcess.Id}.log";
+                }
+                else if (fileExtension.Equals(".mdmp"))
+                {
+                    localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}-{thisProcess.Id}.mdmp";
                 }
             }
+
+            return localPath;
         }
     }
 }
