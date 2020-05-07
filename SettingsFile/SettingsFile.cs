@@ -66,29 +66,27 @@ namespace Elskom.Generic.Libs
             // everything added to the path obtained from System.Environment.GetFolderPath.
             var localPath = Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData);
-            using (var thisProcess = Process.GetCurrentProcess())
+            using var thisProcess = Process.GetCurrentProcess();
+            localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}";
+            if (fileExtension.Equals(".xml", StringComparison.Ordinal))
             {
-                localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}";
-                if (fileExtension.Equals(".xml"))
+                if (!Directory.Exists(localPath))
                 {
-                    if (!Directory.Exists(localPath))
-                    {
-                        _ = Directory.CreateDirectory(localPath);
-                    }
+                    _ = Directory.CreateDirectory(localPath);
+                }
 
-                    // do not create the settings file, just pass this path to XmlObject.
-                    // if we create it ourselves the new optimized class will fail
-                    // to work right if it is empty.
-                    localPath += $"{System.IO.Path.DirectorySeparatorChar}Settings.xml";
-                }
-                else if (fileExtension.Equals(".log"))
-                {
-                    localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}-{thisProcess.Id}.log";
-                }
-                else if (fileExtension.Equals(".mdmp"))
-                {
-                    localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}-{thisProcess.Id}.mdmp";
-                }
+                // do not create the settings file, just pass this path to XmlObject.
+                // if we create it ourselves the new optimized class will fail
+                // to work right if it is empty.
+                localPath += $"{System.IO.Path.DirectorySeparatorChar}Settings.xml";
+            }
+            else if (fileExtension.Equals(".log", StringComparison.Ordinal))
+            {
+                localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}-{thisProcess.Id}.log";
+            }
+            else if (fileExtension.Equals(".mdmp", StringComparison.Ordinal))
+            {
+                localPath += $"{System.IO.Path.DirectorySeparatorChar}{thisProcess.ProcessName}-{thisProcess.Id}.mdmp";
             }
 
             return localPath;
