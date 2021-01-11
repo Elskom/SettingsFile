@@ -6,3 +6,5 @@
 ![Build Status](https://github.com/Elskom/SettingsFile/workflows/.NET%20Core%20%28build20pull%20request%29/badge.svg)
 
 A c# class that handles the settings for any application.
+
+MOVED TO https://github.com/Elskom/Sdk/
